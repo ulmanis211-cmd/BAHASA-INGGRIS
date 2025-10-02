@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Menjodohkan Gambar dan Kata</title>
+  <style>
+    body {
+      background-color: #ccffcc; /* hijau muda */
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    .container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 30px;
+    }
+    .item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    img {
+      width: 150px;
+      height: 150px;
+      border: 2px solid #333;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    textarea {
+      width: 150px;
+      height: 40px;
+      resize: none;
+      text-align: center;
+      font-size: 16px;
+    }
+    .words {
+      margin-top: 30px;
+    }
+    .word {
+      display: inline-block;
+      padding: 8px 15px;
+      margin: 10px;
+      background-color: #fff;
+      border: 1px solid #333;
+      border-radius: 6px;
+      cursor: grab;
+    }
+    button {
+      margin: 20px 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #result {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Pasangkan Gambar dengan Kata yang Tepat</h2>
+
+  <div class="container">
+    <div class="item">
+      <img src="https://ulmanis211-cmd.github.io/BAHASA-INGGRIS/Gambar%201.jpg" alt="Gambar1">
+      <textarea id="txt1" ondrop="drop(event, 'txt1')" ondragover="allowDrop(event)"></textarea>
+    </div>
+    <div class="item">
+      <img src="https://ulmanis211-cmd.github.io/BAHASA-INGGRIS/Gambar%202.jpg" alt="Gambar2">
+      <textarea id="txt2" ondrop="drop(event, 'txt2')" ondragover="allowDrop(event)"></textarea>
+    </div>
+    <div class="item">
+      <img src="https://ulmanis211-cmd.github.io/BAHASA-INGGRIS/Gambar%203.jpg" alt="Gambar3">
+      <textarea id="txt3" ondrop="drop(event, 'txt3')" ondragover="allowDrop(event)"></textarea>
+    </div>
+  </div>
+
+  <div class="words" id="wordBank">
+    <div class="word" draggable="true" ondragstart="drag(event)" id="teacher">teacher</div>
+    <div class="word" draggable="true" ondragstart="drag(event)" id="doctor">doctor</div>
+    <div class="word" draggable="true" ondragstart="drag(event)" id="police">police</div>
+  </div>
+
+  <div>
+    <button onclick="checkAnswer()">Hasil</button>
+    <button onclick="resetAll()">Reset</button>
+  </div>
+
+  <div id="result"></div>
+
+  <script>
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    function drag(ev) {
+      ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function drop(ev, targetId) {
+      ev.preventDefault();
+      var data = ev.dataTransfer.getData("text");
+      var word = document.getElementById(data).innerText;
+      document.getElementById(targetId).value = word;
+      // hapus kata dari word bank
+      document.getElementById(data).style.display = "none";
+    }
+
+    function checkAnswer() {
+      let ans1 = document.getElementById("txt1").value.trim().toLowerCase();
+      let ans2 = document.getElementById("txt2").value.trim().toLowerCase();
+      let ans3 = document.getElementById("txt3").value.trim().toLowerCase();
+
+      if (ans1 === "doctor" && ans2 === "police" && ans3 === "teacher") {
+        document.getElementById("result").innerText = "Hebat jawaban anda benar!";
+        document.getElementById("result").style.color = "green";
+      } else {
+        document.getElementById("result").innerText = "Maaf Jawaban Anda Salah Ulangi lagi";
+        document.getElementById("result").style.color = "red";
+      }
+    }
+
+    function resetAll() {
+      document.getElementById("txt1").value = "";
+      document.getElementById("txt2").value = "";
+      document.getElementById("txt3").value = "";
+
+      // tampilkan kembali kata-kata
+      let words = document.querySelectorAll(".word");
+      words.forEach(w => w.style.display = "inline-block");
+
+      document.getElementById("result").innerText = "";
+    }
+  </script>
+</body>
+</html>
